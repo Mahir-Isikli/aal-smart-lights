@@ -7,8 +7,8 @@ dotenv.config();
 
 const app: Express = express();
 const cors = require('cors') 
-const port = 8080; //process.env.PORT;
-const BACKEND_IP = "192.168.10.193:80" 
+const port = process.env.PORT || 8080; //;
+const BACKEND_IP = process.env.BACKEND_IP || "localhost:80" //"192.168.10.193:80" 
 
 app.use(cors({credentials: true, origin: true}))
 app.use(express.static("public")); 
@@ -18,10 +18,8 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.get('/lights/toggle/', (req: Request, res: Response) => {
-  console.log("Toggling lights!");
-
   const status = req.query.status == "on"; 
-  console.log("Toggeling on: ", status);
+  console.log("Toggling lights! (" + (status ? "on" : "off") + ")");
   
   
   axios.put("http://"+ BACKEND_IP +"/api/8C2FF47893/lights/14:b4:57:ff:fe:72:35:7d-01/state", {on: status})
@@ -39,5 +37,3 @@ app.get('/lights/toggle/', (req: Request, res: Response) => {
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
 });
-
-// /lights/toggle 
