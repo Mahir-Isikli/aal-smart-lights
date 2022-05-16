@@ -1,0 +1,21 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello Lights!</title>
+    <script>
+        function toggleLights() {
+            fetch("localhost:8080/lights/toggle?on").then((res) => {
+                console.log("Fetch response: " + res);
+            })
+        }
+    </script>
+</head>
+<body>
+    <button onclick="toggleLights()" style="background-color: darkcyan; color: whitesmoke; font-weight: bold; padding: 1em; border-radius: 4px;">
+        Toggle Lights
+    </button>
+    
+</body>
+</html>
