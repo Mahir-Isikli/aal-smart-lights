@@ -182,11 +182,10 @@ results = pd.DataFrame(search.cv_results_)
 results_ = results.loc[results['param_classifier'].apply(lambda x: type(x)==LGBMClassifier)]
 for col in results_.columns:
   if 'param_classifier__' in col:
-    sns.set( rc = {'figure.figsize' : ( 12, 7 ), 
+    sns.set( rc = {'figure.figsize' : (12, 7), 
                   'axes.labelsize' : 12 })
     plt.title(col.split('__')[1], size = 16)
     g = sns.scatterplot(results_[col], results_['mean_test_score'])
-    g.set(ylim=(0.515, 0.525))
     plt.show()
 
 print(pd.DataFrame(classification_report(y_test, y_pred>0.5, output_dict=True)))
