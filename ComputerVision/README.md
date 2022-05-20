@@ -6,3 +6,6 @@
 4. Go to the computer vision folder: cd ComputerVision
 5. Install requirements: pip3 install -r requirements.txt
 6. Run: python3 activity_detection_smartlight.py or jupter notebook -> activity_detection_smartlight.ipynb
+
+#### Resources
+1. https://github.com/nicknochnack/MediaPipePoseEstimation
