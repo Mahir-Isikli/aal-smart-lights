@@ -1,38 +1,35 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express } from 'express';
 import dotenv from 'dotenv';
-import axios from 'axios'; 
+import swaggerUi from 'swagger-ui-express'
+import swaggerJsdoc from 'swagger-jsdoc'
 
+import lightRoutes from './routes/lights/toggle'
 
 dotenv.config();
 
 const app: Express = express();
-const cors = require('cors') 
+const cors = require('cors')
 const port = process.env.PORT || 8080; //;
-const BACKEND_IP = process.env.BACKEND_IP || "localhost:80" //"192.168.10.193:80" 
 
-app.use(cors({credentials: true, origin: true}))
-app.use(express.static("public")); 
- 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Express + TypeScript Server');
-});
+app.use(cors({ credentials: true, origin: true }))
 
-app.get('/lights/toggle/', (req: Request, res: Response) => {
-  const status = req.query.status == "on"; 
-  console.log("Toggling lights! (" + (status ? "on" : "off") + ")");
-  
-  
-  axios.put("http://"+ BACKEND_IP +"/api/8C2FF47893/lights/14:b4:57:ff:fe:72:35:7d-01/state", {on: status})
-    .then(() => {
-      res.status(200)
-      res.send("Ok")
-    })
-    .catch((err) => {
-      console.error("Error in toggle!" + err)
-      res.status(500)
-      res.send("Error! :(")
-     })
-}); 
+app.use(express.static("public"));
+
+app.use('/lights', lightRoutes);
+
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Smart lights',
+      version: '1.0.0',
+    },
+  },
+  apis: ['./routes/**/*.ts']
+}
+
+const swaggerSpec = swaggerJsdoc(options)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 app.listen(port, () => {
   console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
