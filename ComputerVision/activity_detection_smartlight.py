@@ -190,6 +190,75 @@ for col in results_.columns:
 
 print(pd.DataFrame(classification_report(y_test, y_pred>0.5, output_dict=True)))
 
+"""### Visualization of Activity Detection"""
+
+model_pipe = search.best_estimator_
+
+
+def draw_landmarks(img, landmarks):
+    mp_drawing.draw_landmarks(image, landmarks, mp_pose.POSE_CONNECTIONS,
+                              mp_drawing.DrawingSpec(
+                                  color=(245, 117, 66), thickness=2, circle_radius=2),
+                              mp_drawing.DrawingSpec(
+                                  color=(245, 66, 230), thickness=2, circle_radius=2)
+                              )
+
+
+def draw_text(img, text):
+    font = cv2.FONT_HERSHEY_PLAIN
+    pos = (25, 25)
+    font_scale = 5
+    font_thickness = 2
+    text_color = (0, 255, 0)
+    text_color_bg = (0, 0, 0)
+
+    x, y = pos
+    text_size, _ = cv2.getTextSize(text, font, font_scale, font_thickness)
+    text_w, text_h = text_size
+    cv2.rectangle(img, (x, y-10), (x + text_w, y +
+                  text_h + 20), text_color_bg, -1)
+    cv2.putText(img, text, (x, y + text_h + font_scale - 1),
+                font, font_scale, text_color, font_thickness)
+
+    return text_size
+
+# Read image
+image = cv2.imread('example.jpg')
+
+# Setup mediapipe instance
+pose = mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5)
+
+# Recolor image to RGB
+image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+image.flags.writeable = False
+
+# Make detection
+results = pose.process(image)
+
+# Recolor back to BGR
+image.flags.writeable = True
+image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+
+# Draw landmarks
+draw_landmarks(image, results.pose_landmarks)
+
+# Write pose image
+cv2.imwrite('example-pose.jpg', image)
+
+X = calculate_all_angles(results.pose_landmarks.landmark)
+y = model_pipe.predict(X)
+activity = None
+if y == 0:
+    activity = 'Sitting'
+else:
+    activity = 'Standing'
+# Write the label
+draw_text(image, 'Sitting')
+
+# Write pose image
+cv2.imwrite('example-activity.jpg', image)
+
+
 """### Tensorflow Example For Later"""
 
 # import tensorflow as tf
