@@ -1,4 +1,5 @@
 /LightServer/node_modules
 
-*/__pycache__/
-*/.ipynb_checkpoints/
+ComputerVision/__pycache__/
+ComputerVision/.ipynb_checkpoints/
+ComputerVision/pickle
