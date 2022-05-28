@@ -16,5 +16,8 @@ COPY . /usr/src/app
 RUN pip3 install -r requirements.txt
 RUN pip3 install opencv-python==4.5.5.64 opencv-python-headless==4.5.5.64 opencv-contrib-python==4.5.5.64
 
+# set env. variables
+ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+
 # run the code
-# CMD python3 activity_detection_server.py
+CMD python3 activity_detection_prediction.py
