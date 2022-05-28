@@ -12,7 +12,10 @@ We should do it, because OpenCV packages are incompatiable with eachother, if th
 - pip3 uninstall opencv-python opencv-python-headless opencv-contrib-python
 <br/>Then you should install OpenCV packages with pip3:
 - pip3 install opencv-python==4.5.5.64 opencv-python-headless==4.5.5.64 opencv-contrib-python==4.5.5.64
-8. Run: python3 activity_detection_modeling.py or jupyter notebook activity_detection_modeling.ipynb
+8. Run: 
+<br/> for feature extraction: python3 feature_extraction.py
+<br/> for data prep., model tuning, training: python3 activity_detection_modeling.py or jupyter notebook activity_detection_modeling.ipynb
+<br/> for prediction: python3 activity_detection_prediction.py
 
 ---
 #### Resources
