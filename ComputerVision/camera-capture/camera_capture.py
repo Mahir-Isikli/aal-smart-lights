@@ -2,6 +2,7 @@ import time
 import vlc
 import datetime
 import config
+import os
 
 #Start a VLC instance
 i = vlc.Instance("--vout=dummy") # when running from cron, there is no screen attached
@@ -9,6 +10,11 @@ camera = i.media_player_new()
 camera.set_mrl(config.rtsp_url)
 camera.audio_set_volume(0)
 camera.play()
+
+# Prepare the capture folder
+write_path = "captures"
+if not os.path.exists(write_path):
+    os.makedirs(write_path)
 
 print ('waiting for VLC')
 time.sleep(10)
