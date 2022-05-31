@@ -121,31 +121,31 @@ model_file.close()
 """## Model Explanation"""
 
 feature_weights = eli5.explain_weights_df(model, feature_names=X_train.columns)
-print('Results of the Tuned Model:', feature_weights, sep='\n')
+print('Feature weights of the Tuned Model:', feature_weights, sep='\n')
 
 """## For Later"""
 
-import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras import layers
+# import tensorflow as tf
+# from tensorflow import keras
+# from tensorflow.keras import layers
 
-# Initialize the model
-model = keras.Sequential()
-# Add layers
-model.add(layers.Dense(5, activation='softmax', input_dim=10))
-model.add(layers.Dense(2, activation='relu'))
-# model.add(layers.Dense(3, activation='softmax'))
-model.add(layers.Dense(1, activation='softmax'))
+# # Initialize the model
+# model = keras.Sequential()
+# # Add layers
+# model.add(layers.Dense(5, activation='softmax', input_dim=10))
+# model.add(layers.Dense(2, activation='relu'))
+# # model.add(layers.Dense(3, activation='softmax'))
+# model.add(layers.Dense(1, activation='softmax'))
 
-# Compile the model
-model.compile(optimizer='adam', 
-              loss='categorical_crossentropy', 
-              metrics=['accuracy'])
+# # Compile the model
+# model.compile(optimizer='adam', 
+#               loss='categorical_crossentropy', 
+#               metrics=['accuracy'])
 
-# Fit the model
-model.fit(X_train, y_train)
-# Predict
-y_pred = model.predict(X_test)
+# # Fit the model
+# model.fit(X_train, y_train)
+# # Predict
+# y_pred = model.predict(X_test)
 
-pd.DataFrame(classification_report(y_test, y_pred>0.5, output_dict=True))
+# pd.DataFrame(classification_report(y_test, y_pred>0.5, output_dict=True))
 
