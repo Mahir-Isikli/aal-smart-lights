@@ -27,6 +27,12 @@ rtsp://USER:PASSWORD@192.168.1.XX:PORT/stream1
 
 ### Use the Camera with the Camera Capture Script
 
+Install the VLC Python library for Python 3
+
+```
+pip3 install python-vlc
+```
+
 In the config.py file you can set the following parameters: 
 
 | Parameter | Description                                               |
@@ -37,3 +43,7 @@ In the config.py file you can set the following parameters:
 |picture_height | Height of the picture snapshot                            |
 |picture_width | Width of the picture snapshot                             |
 
+Run the code with the following command and the images should start being captured in the capture folder
+```
+python3 camera_capture.py
+```
