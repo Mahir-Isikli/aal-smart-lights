@@ -6,7 +6,7 @@ import pickle
 
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
-activity_detector = pickle.load(open('activity_detection_model.pkl', 'rb'))
+activity_detector = pickle.load(open('activity_detection_model2.pkl', 'rb'))
 
 
 """  # Visualization of Pose Estimation and Activity Detection"""
