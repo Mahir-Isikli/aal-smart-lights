@@ -1,5 +1,5 @@
 /**
- * openapi
+ * @openapi
  * /event
  *   get: Disptach Event with ID: eventID
  *     summary:
@@ -24,8 +24,6 @@ import EventController from "../Controller/Event.controller"
 
 const router = express.Router()
 
-console.log("READING EVENT ROUTE")
-
 const lampController: LampController = new LampController()
 const scenesController: SceneController = new SceneController(lampController)
 const eventController: EventController = new EventController(scenesController)
@@ -33,7 +31,7 @@ const eventController: EventController = new EventController(scenesController)
 router.get('/trigger', (req: Request, res: Response) => {
     const eventID = req.query.eventID || "";
 
-    console.log("Received event with ID: " + eventID)
+    console.log("[Event API] Received event with ID: " + eventID)
 
     eventController.handleEvent(eventID as String)
 

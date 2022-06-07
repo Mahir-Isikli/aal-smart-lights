@@ -35,5 +35,4 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 app.use(express.static("public"));
 
-//module.exports = app
 export default app
