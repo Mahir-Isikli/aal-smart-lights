@@ -1,5 +1,5 @@
 import SceneController from "./Scene.controller";
-import LightEvent from "../models/LightEvent.interface"
+import LightEvent from "../models/LightEvent/LightEvent.model"
 
 export default class EventController {
     // Verwaltet Liste von Events

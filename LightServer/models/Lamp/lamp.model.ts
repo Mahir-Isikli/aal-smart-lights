@@ -1,19 +1,13 @@
 import { Schema, model } from 'mongoose';
-
-interface Lamp {
-    id: String,
-    type: String,
-    hasColor: boolean,
-    hasIntensity: boolean
-}
+import Lamp from "./Lamp.interface";
 
 const schema = new Schema<Lamp>({
     id: {type: String, required: true, unique: true},
     type: {type: String, required: true},
+    ip: String,
     hasColor: Boolean,
     hasIntensity: Boolean
 })
 
-// model("Lamp", schema)
 export default model("Lamp", schema)
 

@@ -3,8 +3,8 @@ import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express'
 import swaggerJsdoc from 'swagger-jsdoc'
 
-import lightRoutes from './routes/lights/toggle'
-import eventRoutes from "./routes/event.route"
+import lightRoutes from './routes/lights/toggle.route'
+import eventRoutes from "./routes/events/trigger.route"
 
 dotenv.config();
 

@@ -1,5 +1,5 @@
 import LampController from "./Lamp.controller";
-import LightScene from "../models/scene.interface"
+import LightScene from "../models/Scene/Scene.model"
 
 export default class SceneController {
     // kennt alle scenes
@@ -33,18 +33,25 @@ export default class SceneController {
 
         return new Promise<undefined>((resolve, reject) => {
             LightScene.findOne({id: sceneID}).then(scene => {
+                // make sure we have a valid Scene
                 if (!sceneID || !scene)
-                    return reject("No scene for sceneID: " + sceneID)
+                    return reject("Error: LightScene: " + sceneID + " not found")
 
+                console.log("[Scene Controller] got scene: ", scene)
+                // execute all Configs of the Scene
                 const promises: Array<Promise<undefined>> = scene.lampConfigs
                     .map(config => this.lampController.executeLampConfig(config))
 
+                // throw error if an execution failed
                 Promise.allSettled(promises).then(results => {
                     if (results.some(result => result.status === "rejected"))
                         reject("Error: Triggering scene " + sceneID)
                     else resolve(undefined)
-                })
-            })
+                }).catch(() => reject("Error when executing Scene: " + sceneID))
+            }).catch(() => reject("Error: LightScene: " + sceneID + " not found"))
         })
     }
 }
+
+
+

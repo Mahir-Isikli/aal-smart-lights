@@ -16,9 +16,9 @@
  */
 
 import express, { Request, Response } from 'express'
-import LampController from "../Controller/Lamp.controller"
-import SceneController from "../Controller/Scene.controller"
-import EventController from "../Controller/Event.controller"
+import LampController from "../../Controller/Lamp.controller"
+import SceneController from "../../Controller/Scene.controller"
+import EventController from "../../Controller/Event.controller"
 
 //const BACKEND_IP = process.env.BACKEND_IP || "localhost:80" //"192.168.10.193:80"
 

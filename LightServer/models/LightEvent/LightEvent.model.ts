@@ -1,9 +1,5 @@
 import { Schema, model } from 'mongoose';
-
-interface LightEvent {
-    id: String,
-    scenes: Array<String>
-}
+import LightEvent from "./LightEvent.interface";
 
 const schema = new Schema<LightEvent>({
     id: {type: String, required: true, unique: true},

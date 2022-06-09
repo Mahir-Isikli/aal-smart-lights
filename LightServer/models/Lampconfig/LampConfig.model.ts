@@ -1,19 +1,12 @@
 import { Schema, model } from 'mongoose';
+import LampConfig from "./LampConfig.interface";
 
-interface Lampconfig {
-    id: String,
-    lampId: String,
-    turnedOn: boolean,
-    color: String,
-    intensity: Number
-}
-
-const schema = new Schema<Lampconfig>({
+const schema = new Schema<LampConfig>({
     id: {type: String, required: true, unique: true},
     lampId: String,
     turnedOn: Boolean,
     color: String,
-    intensity: Boolean
+    intensity: Number
 })
 
 export default model("Lampconfig", schema)

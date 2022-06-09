@@ -7,7 +7,13 @@
     <script>
         function toggleLights(event) {
             const status = event ? "on" : "off"
-            fetch("http://192.168.10.248:8080/lights/toggle?status=" + status).then((res) => {
+            fetch("http://192.168.10.248:8081/lights/toggle?status=" + status).then((res) => {
+                console.log("Fetch response: " + res);
+            })
+        }
+
+        function triggerEvent(event) {
+            fetch("http://localhost:8081/events/trigger?eventID=" + event).then((res) => {
                 console.log("Fetch response: " + res);
             })
         }
@@ -17,9 +23,11 @@
     <button onclick="toggleLights(true)" style="background-color: darkcyan; color: whitesmoke; font-weight: bold; padding: 1em; border-radius: 4px;">
         Toggle Lights: On
     </button>
-
-    <button onclick="toggleLights(false)" style="background-color: tomato; color: white; padding: 1em; border-radius: 4px;">
+    <button onclick="toggleLights(false)" style="background-color: tomato; color: white; padding: 1em; margin-left: 0; border-radius: 4px;">
         Off
+    </button>
+    <button onclick="triggerEvent('sitDown')" style="background-color: cornflowerblue; color: whitesmoke; padding: 1em; border-radius: 4px; display: block; margin: 0 auto;">
+        Event: SitDown
     </button>
     
 </body>
