@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  activity-detection:
+    image: egeatmaca/activity-detection
+    volumes: 
+      - .:/usr/src/app
+    ports: 
+      - 5001:80
+    # devices:
+    #   - /dev/video0:/dev/video0
+    environment:
+      - "DISPLAY=$DISPLAY"
+  backend:
+    image: paulderfischer/lightserver:x64
+    ports:
+      - 5002:8080
