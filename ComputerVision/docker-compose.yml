@@ -11,7 +11,16 @@ services:
     #   - /dev/video0:/dev/video0
     environment:
       - "DISPLAY=$DISPLAY"
+
   backend:
-    image: paulderfischer/lightserver:x64
+    image: paulderfischer/lightserver:trigger-test
     ports:
       - 5002:8080
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=AzureDiamond
+      - MONGO_INITDB_ROOT_PASSWORD=hunter2
