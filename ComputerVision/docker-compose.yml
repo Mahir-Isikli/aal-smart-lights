@@ -5,10 +5,11 @@ services:
     image: egeatmaca/activity-detection
     volumes: 
       - .:/usr/src/app
+      - /tmp/.X11-unix:/tmp/.X11-unix:ro
     ports: 
       - 5001:80
-    # devices:
-    #   - /dev/video0:/dev/video0
+    devices:
+      - /dev/video0:/dev/video0
     environment:
       - "DISPLAY=$DISPLAY"
 
