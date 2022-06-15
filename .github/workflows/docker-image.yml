@@ -30,14 +30,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./ComputerVision
+          platforms: linux/amd64,linux/arm/v7,linux/arm64/v8
           push: true
           tags: |
             paulderfischer/computer-vision:latest
-            
-      - name: Build Computer Vision
-        uses: docker/build-push-action@v2
-        with:
-          context: ./LightServer
-          push: true
-          tags: |
-            paulderfischer/lightserver:latest
