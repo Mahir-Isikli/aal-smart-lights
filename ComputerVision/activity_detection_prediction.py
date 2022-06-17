@@ -42,11 +42,11 @@ if __name__ == '__main__':
                 if y > 0.5 :
                     draw_text(image, 'Working')
                     print('Working')
-                    requests.get(os.environ['LS_HOST']+'/events/trigger?eventID=1')
+                    requests.get('http://'+os.environ['LS_HOST']+'/events/trigger?eventID=1')
                 else:
                     draw_text(image, 'Not Working')
                     print('Not Working')
-                    requests.get(os.environ['LS_HOST']+'/events/trigger?eventID=0')
+                    requests.get('http://'+os.environ['LS_HOST']+'/events/trigger?eventID=0')
             except Exception as e:
                 print(str(e))
 
