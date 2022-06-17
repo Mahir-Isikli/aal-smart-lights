@@ -1,15 +1,15 @@
-import express, { Express, Request, Response } from 'express';
-import dotenv from 'dotenv';
+//const app = require("./express-server-config")
+import { AddressInfo } from "node:net";
+import app from "./express-server-config"
+import db from "./db-config"
+const port = process.env.PORT || 8081;
 
-dotenv.config();
+// Connect Data Base
+db
 
-const app: Express = express();
-const port = 8080; //process.env.PORT;
-
-app.get('/', (req: Request, res: Response) => {
-  res.send('Express + TypeScript Server');
+// Start web server
+let server = app.listen(port, () => {
+  console.log(`️[⚡ server]: Server is running at https://localhost:${(server.address() as AddressInfo)?.port}`);
 });
 
-app.listen(port, () => {
-  console.log(`⚡️[server]: Server is running at https://localhost:${port}`);
-});
+
