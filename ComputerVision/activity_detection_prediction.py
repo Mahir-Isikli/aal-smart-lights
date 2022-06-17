@@ -3,6 +3,8 @@ import mediapipe as mp
 from feature_extraction import estimate_pose, calculate_all_angles
 from visualization import draw_landmarks, draw_text
 import pickle
+import requests
+import os
 
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
@@ -40,13 +42,15 @@ if __name__ == '__main__':
                 if y > 0.5 :
                     draw_text(image, 'Working')
                     print('Working')
+                    requests.get(os.environ['LS_HOST']+'/events/trigger?eventID=1')
                 else:
                     draw_text(image, 'Not Working')
                     print('Not Working')
+                    requests.get(os.environ['LS_HOST']+'/events/trigger?eventID=0')
             except Exception as e:
                 print(str(e))
 
-            cv2.imshow('Mediapipe Feed', image)
+            # cv2.imshow('Mediapipe Feed', image)
 
             if cv2.waitKey(10) & 0xFF == ord('q'):
                 break

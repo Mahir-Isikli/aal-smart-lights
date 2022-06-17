@@ -2,7 +2,8 @@ version: '3'
 
 services:
   activity-detection:
-    image: egeatmaca/activity-detection
+    # image: egeatmaca/activity-detection
+    build: .
     volumes: 
       - .:/usr/src/app
       - /tmp/.X11-unix:/tmp/.X11-unix:ro
@@ -12,6 +13,7 @@ services:
       - /dev/video0:/dev/video0
     environment:
       - "DISPLAY=$DISPLAY"
+      - LS_HOST=backend
 
   backend:
     image: paulderfischer/lightserver:trigger-test
