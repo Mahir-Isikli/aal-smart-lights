@@ -1,4 +1,4 @@
-FROM python:3.8.13-bullseye
+FROM ubuntu:latest
 
 # update and upgrade
 RUN apt-get update && apt-get upgrade -y
@@ -6,7 +6,7 @@ RUN apt-get update && apt-get upgrade -y
 RUN apt update && apt install tzdata -y
 ENV TZ="Europe/Berlin"
 # install python3 and pip3
-# RUN apt-get install python3 python3-pip -y
+RUN apt-get install python3 python3-pip -y
 # install opencv dependencies
 RUN apt-get install ffmpeg libsm6 libxext6  -y
 
