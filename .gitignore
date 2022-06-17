@@ -1,2 +1,6 @@
 /LightServer/node_modules
 /LightServer/dist
+ComputerVision/__pycache__/
+ComputerVision/.ipynb_checkpoints/
+ComputerVision/pickle
+ComputerVision/activity_detection_image.tar
