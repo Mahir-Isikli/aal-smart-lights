@@ -2,7 +2,7 @@ version: '3'
 
 services:
   activity-detection:
-    image: egeatmaca/activity-detection
+    image: paulderfischer/computer-vision:linux-arm64-v8-latest
     volumes: 
       - .:/usr/src/app
       - /tmp/.X11-unix:/tmp/.X11-unix:ro
@@ -11,10 +11,11 @@ services:
     devices:
       - /dev/video0:/dev/video0
     environment:
-      - "DISPLAY=$DISPLAY"
+      # - "DISPLAY=$DISPLAY"
+      - LS_HOST=backend:8080
 
   backend:
-    image: paulderfischer/lightserver:trigger-test
+    image: paulderfischer/lightserver:arm
     ports:
       - 5002:8080
     depends_on:

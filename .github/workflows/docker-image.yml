@@ -1,0 +1,44 @@
+name: Docker Images CI/CD
+
+on:
+  push:
+    branches: [ "main", "try-gh-actions" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - platform: linux/amd64
+            tag: linux-amd64
+          - platform: linux/arm64/v8
+            tag: linux-arm64-v8
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
+        
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+        
+      - name: Build Computer Vision
+        uses: docker/build-push-action@v2
+        with:
+          context: ./ComputerVision
+          platforms: ${{ matrix.platform }}
+          push: true
+          tags: |
+            paulderfischer/computer-vision:${{ matrix.tag }}-latest
