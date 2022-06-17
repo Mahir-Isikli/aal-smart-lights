@@ -13,8 +13,6 @@ jobs:
         include:
           - platform: linux/amd64
             tag: linux-amd64
-          - platform: linux/arm/v7
-            tag: linux-arm-v7
           - platform: linux/arm64/v8
             tag: linux-arm64-v8
 
