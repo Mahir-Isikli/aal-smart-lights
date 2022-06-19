@@ -1,5 +1,4 @@
 #version: '3.8'
-
 services:
 #  activity-detection:
 #    image: paulderfischer/computer-vision:linux-arm64-v8-latest
@@ -27,13 +26,9 @@ services:
   mongodb:
     image: mongo
     healthcheck:
-      test: [ "CMD", "mongo", "test", "--eval", "'printjson(`Hello World!`)'"] # mongo test --eval "printjson('Hello World!')"
-      interval: 5s
+      test: [ "CMD", "mongo", "test", "--eval", "'printjson(\"Hello from healthcheck!\")'"]
+      interval: 10s
       retries: 3
-      timeout: 15s
-      start_period: 10s
-    command:
-      - "--bind_ip_all"
 
   initMongodb:
     image: mongo
@@ -42,10 +37,4 @@ services:
     depends_on:
       mongodb:
         condition: service_healthy
-    entrypoint:
-      - mongo
-    command:
-      - "test"
-      - "--eval"
-      - "'printjson(`Hello World!`)'"
-
+    command: ["mongo", "mongodb/test", "/init.js"]
