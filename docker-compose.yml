@@ -1,0 +1,51 @@
+#version: '3.8'
+
+services:
+#  activity-detection:
+#    image: paulderfischer/computer-vision:linux-arm64-v8-latest
+#    volumes:
+#      - .:/usr/src/app
+#      - /tmp/.X11-unix:/tmp/.X11-unix:ro
+#    ports:
+#      - 5001:80
+#    devices:
+#      - /dev/video0:/dev/video0
+#    environment:
+#      # - "DISPLAY=$DISPLAY"
+#      - LS_HOST=backend:8080
+
+  backend:
+    image: paulderfischer/lightserver:latest
+    ports:
+      - 5002:8080
+    depends_on:
+      - initMongodb
+    environment:
+      - PORT=8080
+      - DB_CONNECTION_STRING=mongodb://mongodb:27017/LightServer
+
+  mongodb:
+    image: mongo
+    healthcheck:
+      test: [ "CMD", "mongo", "test", "--eval", "'printjson(`Hello World!`)'"] # mongo test --eval "printjson('Hello World!')"
+      interval: 5s
+      retries: 3
+      timeout: 15s
+      start_period: 10s
+    command:
+      - "--bind_ip_all"
+
+  initMongodb:
+    image: mongo
+    volumes:
+      - ./LightServer/docker-initdb.js:/init.js
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    entrypoint:
+      - mongo
+    command:
+      - "test"
+      - "--eval"
+      - "'printjson(`Hello World!`)'"
+
