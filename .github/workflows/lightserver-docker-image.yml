@@ -2,7 +2,7 @@ name: LightServer Docker Image
 
 on:
   push:
-    branches: [ "main", "lightserver" ]
+    branches: [ "main", "lightserver", "setup-docker-compose" ]
   pull_request:
     branches: [ "main" ]
 
