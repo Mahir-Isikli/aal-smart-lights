@@ -37,7 +37,7 @@ services:
     depends_on:
       mongodb:
         condition: service_healthy
-    command: ["mongo", "mongodb/test", "/init.js"]
+    command: ["mongo", "mongodb/LightServer", "/init.js"]
 
 networks:
   hostnet:
