@@ -38,3 +38,8 @@ services:
       mongodb:
         condition: service_healthy
     command: ["mongo", "mongodb/test", "/init.js"]
+
+networks:
+  hostnet:
+    external: true
+    name: host
