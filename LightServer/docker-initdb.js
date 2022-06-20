@@ -41,3 +41,4 @@ db.lightscenes.bulkWrite( [
                 ]
             } } }
 ])
+//
