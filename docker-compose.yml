@@ -24,14 +24,14 @@ services:
       - DB_CONNECTION_STRING=mongodb://mongodb:27017/LightServer
 
   mongodb:
-    image: mongo
+    image: mongo:bionic
     healthcheck:
       test: [ "CMD", "mongo", "test", "--eval", "'printjson(\"Hello from healthcheck!\")'"]
       interval: 10s
       retries: 3
 
   initMongodb:
-    image: mongo
+    image: mongo:bionic
     volumes:
       - ./LightServer/docker-initdb.js:/init.js
     depends_on:
