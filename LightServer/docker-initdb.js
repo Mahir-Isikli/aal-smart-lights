@@ -12,6 +12,20 @@ const lampconfigs = [
                 "color": "00A0FF",
                 "intensity": 100,
                 "turnedOn": true
+            } } },
+    { insertOne : { "document" : {
+                "id": "stripGreen",
+                "lampId": "LightStrip",
+                "color": "72dc14",
+                "intensity": 100,
+                "turnedOn": true
+            } } },
+    { insertOne : { "document" : {
+                "id": "stripRed",
+                "lampId": "LightStrip",
+                "color": "dc1a14",
+                "intensity": 100,
+                "turnedOn": true
             } } }
 ]
 
@@ -27,7 +41,19 @@ const events = [
                     "bright_lights",
                     "strip1"
                 ]
-            } } }
+    }}},
+    { insertOne : { "document" : {
+                "id": "0",
+                "scenes": [
+                    "red_lights"
+                ]
+    }}},
+    { insertOne : { "document" : {
+                "id": "1",
+                "scenes": [
+                    "green_lights"
+                ]
+    }}}
 ]
 
 const scenes = [
@@ -41,6 +67,18 @@ const scenes = [
                 "id": "strip1",
                 "lampConfigs": [
                     "stripOn"
+                ]
+            } } },
+    { insertOne : { "document" : {
+                "id": "green_lights",
+                "lampConfigs": [
+                    "stripGreen"
+                ]
+            } } },
+    { insertOne : { "document" : {
+                "id": "red_lights",
+                "lampConfigs": [
+                    "stripRed"
                 ]
             } } }
 ]
