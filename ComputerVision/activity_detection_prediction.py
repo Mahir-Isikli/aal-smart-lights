@@ -40,35 +40,27 @@ if __name__ == '__main__':
             try:
                 # Calculate angles
                 features = calculate_all_angles(results.pose_landmarks.landmark)
-                # Predict the activity
+                # Predict the activity proba and append to the list
                 y = activity_detector.predict_proba(features)[0][1]
-                # Render activity detection
-                if y > 0.5:
-                    # draw_text(image, 'Working')
-                    # print('Working')
-                    draw_text(image, activity)
-                    print(activity)
-                    probas.append(y)
-                    # requests.get('http://'+os.environ['LS_HOST']+'/events/trigger?eventID=1')
-                else:
-                    # draw_text(image, 'Not Working')
-                    # print('Not Working')
-                    draw_text(image, activity)
-                    print(activity)
-                    probas.append(y)
-                    # requests.get('http://'+os.environ['LS_HOST']+'/events/trigger?eventID=0')
+                probas.append(y)
                 proba_counter += 1
-                
+                # Aggregate prediction results and decide activity for the time frame
                 if proba_counter == 50:
                     mean_proba = np.mean(probas)
                     if mean_proba >= 0.5:
                         activity = 'Working'
-                        print('Here! Working')
+                        # requests.get('http://'+os.environ['LS_HOST']+'/events/trigger?eventID=1')
                     else:
                         activity = 'Not Working'
-                        print('Here! Not Working')
+                        # requests.get('http://'+os.environ['LS_HOST']+'/events/trigger?eventID=0')
                     probas = []
                     proba_counter = 0
+                    print('Aggregated Result:', activity)
+
+                # Render activity detection
+                draw_text(image, activity)
+                print('Working Proba:', y)
+
             except Exception as e:
                 print(str(e))
 
