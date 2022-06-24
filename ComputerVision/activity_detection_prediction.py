@@ -5,6 +5,7 @@ from visualization import draw_landmarks, draw_text
 import pickle
 import requests
 import os
+import numpy as np
 
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
@@ -19,6 +20,9 @@ if __name__ == '__main__':
 
     # Setup mediapipe instance
     with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
+        # Initialize probability list
+        probas, proba_counter = [], 0
+        activity = ''
         while cap.isOpened():
             ret, frame = cap.read()
 
@@ -37,20 +41,38 @@ if __name__ == '__main__':
                 # Calculate angles
                 features = calculate_all_angles(results.pose_landmarks.landmark)
                 # Predict the activity
-                y = activity_detector.predict(features)[0]
+                y = activity_detector.predict_proba(features)[0][1]
                 # Render activity detection
-                if y > 0.5 :
-                    draw_text(image, 'Working')
-                    print('Working')
-                    requests.get('http://'+os.environ['LS_HOST']+'/events/trigger?eventID=1')
+                if y > 0.5:
+                    # draw_text(image, 'Working')
+                    # print('Working')
+                    draw_text(image, activity)
+                    print(activity)
+                    probas.append(y)
+                    # requests.get('http://'+os.environ['LS_HOST']+'/events/trigger?eventID=1')
                 else:
-                    draw_text(image, 'Not Working')
-                    print('Not Working')
-                    requests.get('http://'+os.environ['LS_HOST']+'/events/trigger?eventID=0')
+                    # draw_text(image, 'Not Working')
+                    # print('Not Working')
+                    draw_text(image, activity)
+                    print(activity)
+                    probas.append(y)
+                    # requests.get('http://'+os.environ['LS_HOST']+'/events/trigger?eventID=0')
+                proba_counter += 1
+                
+                if proba_counter == 50:
+                    mean_proba = np.mean(probas)
+                    if mean_proba >= 0.5:
+                        activity = 'Working'
+                        print('Here! Working')
+                    else:
+                        activity = 'Not Working'
+                        print('Here! Not Working')
+                    probas = []
+                    proba_counter = 0
             except Exception as e:
                 print(str(e))
 
-            # cv2.imshow('Mediapipe Feed', image)
+            cv2.imshow('Mediapipe Feed', image)
 
             if cv2.waitKey(10) & 0xFF == ord('q'):
                 break
