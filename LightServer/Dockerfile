@@ -1,9 +1,23 @@
-FROM node:14
+FROM node:14-bullseye-slim AS build
+
 WORKDIR /usr/src/app
-COPY package*.json ./
-RUN npm install
+
 COPY . .
-RUN npm run build
+
+RUN npm install \
+    && npm run build
+
+FROM node:14-bullseye-slim AS run
+
+ENV NODE_ENV=production
+WORKDIR /usr/src/app
+
+COPY package.json ./
+COPY --from=build /usr/src/app/package-lock.json ./
+RUN npm ci
+
+COPY --from=build /usr/src/app/dist ./
+
 ENV PORT=8080
 EXPOSE 8080
-CMD ["node", "./dist/index.js"]
+CMD ["node", "./index.js"]
