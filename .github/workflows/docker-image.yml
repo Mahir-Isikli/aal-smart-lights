@@ -2,20 +2,12 @@ name: Docker Images CI/CD
 
 on:
   push:
-    branches: [ "main", "try-gh-actions" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
 jobs:
   build:
-    strategy:
-      matrix:
-        include:
-          - platform: linux/amd64
-            tag: linux-amd64
-          - platform: linux/arm64/v8
-            tag: linux-arm64-v8
-
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -38,7 +30,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./ComputerVision
-          platforms: ${{ matrix.platform }}
+          platforms: linux/amd64,linux/arm64/v8
           push: true
           tags: |
-            paulderfischer/computer-vision:${{ matrix.tag }}-latest
+            paulderfischer/computer-vision:latest
