@@ -10,10 +10,13 @@ dotenv.config();
 
 const app: Express = express();
 const cors = require('cors')
+const bodyParser = require("body-parser")
 
-
+// Middleware
 app.use(cors({ credentials: true, origin: true }))
+app.use(bodyParser.json())
 
+// Routes
 app.use('/lights', lightRoutes);
 app.use('/events', eventRoutes);
 

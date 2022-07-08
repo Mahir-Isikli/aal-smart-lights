@@ -39,24 +39,4 @@ router.get('/trigger', (req: Request, res: Response) => {
     res.send("Ok")
 });
 
-/**
- * GET: all configs || one config by ID
- */
-router.get("/", lampController.find)
-
-/**
- * DELETE config with ID
- */
-router.delete("/", lampController.delete)
-
-/**
- * POST create new config
- */
-router.post("/", lampController.create)
-
-/**
- * PUT update a config
- */
-router.put("/", lampController.update)
-
 export default router

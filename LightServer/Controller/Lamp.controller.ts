@@ -2,6 +2,8 @@ import Lamp from "../models/Lamp/Lamp.interface"
 import LampModel from "../models/Lamp/lamp.model"
 import LampConfigModel from "../models/Lampconfig/LampConfig.model"
 import LampConfig from "../models/Lampconfig/LampConfig.interface";
+import express, { Request, Response } from 'express'
+
 const http = require('http')
 
 export default class LampController {
@@ -21,6 +23,127 @@ export default class LampController {
 
     }
 
+    create = (req: Request, res: Response) => {
+        // Validate request
+        if(!req.body) {
+            return res.status(400).send({
+                message: "body can not be empty"
+            });
+        }
+
+        // Create a config
+        const config = new LampConfigModel({
+            id: req.body.id,
+            lampId: req.body.lampId,
+            turnedOn: req.body.turnedOn,
+            color: req.body.color,
+            intensity: req.body.intensity
+        })
+
+        // Save config in the database
+        config.save()
+            .then(data => {
+                res.send(data);
+            }).catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while creating the Config."
+            });
+        });
+    }
+
+    find = (req: Request, res: Response) => {
+        if (req.query.id) this.findOne(req, res)
+        else this.findAll(req, res)
+    }
+
+    findAll = (req: Request, res: Response) => {
+        LampConfigModel.find()
+            .then(configs => {
+                res.send(configs);
+            }).catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving configs."
+            });
+        });
+    }
+
+    findOne = (req: Request, res: Response) => {
+        LampConfigModel.findOne({id: req.query.id})
+            .then(config => {
+                if(!config) {
+                    return res.status(404).send({
+                        message: "Config not found with id " + req.query.id
+                    });
+                }
+                res.send(config);
+            }).catch(err => {
+            if(err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: "Config not found with id " + req.query.id
+                });
+            }
+            return res.status(500).send({
+                message: "Error retrieving config with id " + req.query.id
+            });
+        });
+    }
+
+    update = (req: Request, res: Response) => {
+        // Validate Request
+        if(!req.body.id) {
+            return res.status(400).send({
+                message: "Config ID can not be empty"
+            });
+        }
+
+        // Find note and update it with the request body
+        LampConfigModel.findOneAndUpdate({id: req.query.id}, {
+            id: req.body.id,
+            lampId: req.body.lampId || undefined,
+            turnedOn: req.body.turnedOn || undefined,
+            color: req.body.color || undefined,
+            intensity: req.body.intensity || undefined
+        }, {new: true})
+            .then(config => {
+                if(!config) {
+                    return res.status(404).send({
+                        message: "Config not found with id " + req.query.id
+                    });
+                }
+                res.send(config);
+            }).catch(err => {
+            if(err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: "Config not found with id " + req.query.id
+                });
+            }
+            return res.status(500).send({
+                message: "Error updating config with id " + req.query.id
+            });
+        });
+    }
+
+    delete = (req: Request, res: Response) => {
+        LampConfigModel.findOneAndRemove({id: req.query.id})
+            .then(config => {
+                if(!config) {
+                    return res.status(404).send({
+                        message: "Config not found with id " + req.query.id
+                    });
+                }
+                res.send({message: "Config deleted successfully!"});
+            }).catch(err => {
+            if(err.kind === 'ObjectId' || err.name === 'NotFound') {
+                return res.status(404).send({
+                    message: "Config not found with id " + req.query.id
+                });
+            }
+            return res.status(500).send({
+                message: "Could not delete config with id " + req.query.id
+            });
+        });
+    }
+
     /**
      * Parses a LampConfig with type 'wled' into a String that can be sent via HTTP GET request
      * @param config LampConfig of type 'wled'
@@ -38,6 +161,8 @@ export default class LampController {
 
         // translate config to WLED HTTP API format
         // from: https://kno.wled.ge/interfaces/http-api/
+
+        // http://1.2.3.4&A=255&T=1&R=255&G=255&B=255
         const wledConfig: any = {
             A: Math.floor(_config.intensity / 100 * 255), // brightness
             T: _config.turnedOn ? 1 : 0, // turned on/off
