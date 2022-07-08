@@ -1,55 +1,54 @@
 import LampController from "./Lamp.controller";
-import LightScene from "../models/Scene/Scene.model"
+import LightSceneModel from "../models/Scene/Scene.model"
+import GroupController from "./Group.controller";
+import LampConfig from "../models/Lampconfig/LampConfig.interface";
+import LampConfigModel from "../models/Lampconfig/LampConfig.model";
+import LightScene from "../models/Scene/Scene.interface";
 
 export default class SceneController {
-    // kennt alle scenes
-    // kann scenes erstellen, löschen, modifizieren
-    //private scenes: Array<LightScene>
+    // kennt alle scenes und alle groups 
+    // kann scenes und groups erstellen, löschen, modifizieren
+ 
     private lampController: LampController
-    constructor(lampController: LampController) {
-        /*
-        const bright_lights: LightScene = {
-            id: "bright_lights",
-            lampConfigs: ["lukeOn"]
-        }
-        const strip1: LightScene = {
-            id: "strip1",
-            lampConfigs: ["stripOn"]
-        }
-
-        this.scenes = [bright_lights, strip1]
-
-         */
-
+    private groupController: GroupController
+    constructor(lampController: LampController, groupController: GroupController) {
         this.lampController = lampController
+        this.groupController = groupController
     }
+
+    
 
     /**
      * löst Scene mit SceneID aus, übergibt alle Lampconfigs an LampController
      * @param sceneID
      */
-    triggerScene(sceneID: String): Promise<undefined> {
+    async triggerScene(sceneID: String) {
         console.log("[Scene Controller] Triggering scene: ", sceneID)
 
-        return new Promise<undefined>((resolve, reject) => {
-            LightScene.findOne({id: sceneID}).then(scene => {
-                // make sure we have a valid Scene
-                if (!sceneID || !scene)
-                    return reject("Error: LightScene: " + sceneID + " not found")
+        // fetch scene from db
+        const scene: (LightScene | null) = await LightSceneModel.findOne({id: sceneID})
+        // make sure we have a valid Scene
+        if (!scene)
+            throw("Error: LightScene: " + sceneID + " not found")
+        console.log("[Scene Controller] got scene: ", scene)
 
-                console.log("[Scene Controller] got scene: ", scene)
-                // execute all Configs of the Scene
-                const promises: Array<Promise<undefined>> = scene.lampConfigs
-                    .map(config => this.lampController.executeLampConfig(config))
+        // fetch configs from db
+        const configs: LampConfig[] = []
+        for (const configId of scene.lampConfigs) {
+            const config: (LampConfig | null) = await LampConfigModel.findOne({id: configId})
+            if (!config) continue
+            configs.push(config)
+        }
 
-                // throw error if an execution failed
-                Promise.allSettled(promises).then(results => {
-                    if (results.some(result => result.status === "rejected"))
-                        reject("Error: Triggering scene " + sceneID)
-                    else resolve(undefined)
-                }).catch(() => reject("Error when executing Scene: " + sceneID))
-            }).catch(() => reject("Error: LightScene: " + sceneID + " not found"))
-        })
+        // generate configs from group
+        for (const groupId of scene.lampGroups) {
+            const generatedConfigs: LampConfig[] = await this.groupController.generateLightConfigs(groupId as string)
+            configs.push(... generatedConfigs)
+        }
+
+        // send configs to lamp controller for execution
+        const promises: Array<Promise<void>> = configs.map(config => this.lampController.executeLampConfig(config))
+        await Promise.allSettled(promises)
     }
 }
 

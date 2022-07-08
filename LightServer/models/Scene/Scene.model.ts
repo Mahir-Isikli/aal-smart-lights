@@ -3,7 +3,8 @@ import LightScene from "./Scene.interface";
 
 const schema = new Schema<LightScene>({
     id: {type: String, required: true, unique: true},
-    lampConfigs: Array
+    lampConfigs: Array,
+    lampGroups: [String]
 })
 
 export default model("LightScene", schema)

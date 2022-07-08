@@ -19,14 +19,17 @@ import express, { Request, Response } from 'express'
 import LampController from "../../Controller/Lamp.controller"
 import SceneController from "../../Controller/Scene.controller"
 import EventController from "../../Controller/Event.controller"
+import GroupController from "../../Controller/Group.controller";
 
 //const BACKEND_IP = process.env.BACKEND_IP || "localhost:80" //"192.168.10.193:80"
 
 const router = express.Router()
 
 const lampController: LampController = new LampController()
-const scenesController: SceneController = new SceneController(lampController)
+const groupController: GroupController = new GroupController(lampController)
+const scenesController: SceneController = new SceneController(lampController, groupController)
 const eventController: EventController = new EventController(scenesController)
+
 
 router.get('/trigger', (req: Request, res: Response) => {
     const eventID = req.query.eventID || "";

@@ -6,7 +6,9 @@ const schema = new Schema<Lamp>({
     type: {type: String, required: true},
     ip: String,
     hasColor: Boolean,
-    hasIntensity: Boolean
+    hasIntensity: Boolean,
+    category: Number,
+    location: Number
 })
 
 export default model("Lamp", schema)
