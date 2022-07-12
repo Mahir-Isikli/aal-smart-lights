@@ -1,6 +1,6 @@
 services:
   activity-detection:
-    image: paulderfischer/computer-vision:linux-arm64-v8-latest
+    image: paulderfischer/computer-vision:latest
     volumes:
       - .:/usr/src/app
       - /tmp/.X11-unix:/tmp/.X11-unix:ro

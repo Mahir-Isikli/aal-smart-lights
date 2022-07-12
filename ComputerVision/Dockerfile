@@ -15,4 +15,4 @@ RUN pip3 install -r requirements.txt \
 
 ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
 
-CMD python3 activity_detection_prediction.py
+CMD ["python3", "activity_detection_prediction.py"]
