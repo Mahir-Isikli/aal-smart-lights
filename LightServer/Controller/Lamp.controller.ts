@@ -27,7 +27,6 @@ export default class LampController {
      * @param lamp Lamp that the LampConfig is meant for
      */
     configToWledRequest(config: LampConfig, lamp: Lamp): string {
-        console.log("Building WLED Req!")
         let result = "" // will be returned
         const _config: LampConfig = {id: config.id, // copy config so we dont mess with it
             lampId: config.lampId,

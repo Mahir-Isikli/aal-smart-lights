@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const url = 'mongodb://127.0.0.1:27017/LightServer'
+const url = process.env.DB_CONNECTION_STRING || 'mongodb://127.0.0.1:27017/LightServer'
 
 mongoose.connect(url, { useNewUrlParser: true })
 const db = mongoose.connection

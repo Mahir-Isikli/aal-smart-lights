@@ -1,0 +1,44 @@
+services:
+  activity-detection:
+    image: paulderfischer/computer-vision:latest
+    volumes:
+      - .:/usr/src/app
+      - /tmp/.X11-unix:/tmp/.X11-unix:ro
+    ports:
+      - 5001:80
+    devices:
+      - /dev/video0:/dev/video0
+    environment:
+      # - "DISPLAY=$DISPLAY"
+      - LS_HOST=backend:8080
+
+  backend:
+    image: paulderfischer/lightserver:latest
+    ports:
+      - 5002:8080
+    depends_on:
+      - initMongodb
+    environment:
+      - PORT=8080
+      - DB_CONNECTION_STRING=mongodb://mongodb:27017/LightServer
+
+  mongodb:
+    image: mongo:bionic
+    healthcheck:
+      test: [ "CMD", "mongo", "test", "--eval", "'printjson(\"Hello from healthcheck!\")'"]
+      interval: 10s
+      retries: 3
+
+  initMongodb:
+    image: mongo:bionic
+    volumes:
+      - ./LightServer/docker-initdb.js:/init.js
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    command: ["mongo", "mongodb/LightServer", "/init.js"]
+
+networks:
+  hostnet:
+    external: true
+    name: host
