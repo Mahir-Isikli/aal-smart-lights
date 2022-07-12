@@ -1,17 +1,16 @@
-#version: '3.8'
 services:
-#  activity-detection:
-#    image: paulderfischer/computer-vision:linux-arm64-v8-latest
-#    volumes:
-#      - .:/usr/src/app
-#      - /tmp/.X11-unix:/tmp/.X11-unix:ro
-#    ports:
-#      - 5001:80
-#    devices:
-#      - /dev/video0:/dev/video0
-#    environment:
-#      # - "DISPLAY=$DISPLAY"
-#      - LS_HOST=backend:8080
+  activity-detection:
+    image: paulderfischer/computer-vision:linux-arm64-v8-latest
+    volumes:
+      - .:/usr/src/app
+      - /tmp/.X11-unix:/tmp/.X11-unix:ro
+    ports:
+      - 5001:80
+    devices:
+      - /dev/video0:/dev/video0
+    environment:
+      # - "DISPLAY=$DISPLAY"
+      - LS_HOST=backend:8080
 
   backend:
     image: paulderfischer/lightserver:latest

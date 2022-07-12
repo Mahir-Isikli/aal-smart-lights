@@ -31,7 +31,7 @@ const lampconfigs = [
 
 const lamps = [
     { insertOne : { "document" : {  "id": "LukeRoberts",  "hasColor": true,  "hasIntensity": true,  "type": "bluetooth",  "ip": "4.3.2.1"} } },
-    { insertOne : { "document" : {  "id": "LightStrip",  "hasColor": true,  "hasIntensity": true,  "type": "wled",  "ip": "192.168.81.5"} } }
+    { insertOne : { "document" : {  "id": "LightStrip",  "hasColor": true,  "hasIntensity": true,  "type": "wled",  "ip": "192.168.244.5"} } }
 ]
 
 const events = [
