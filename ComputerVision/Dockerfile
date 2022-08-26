@@ -1,3 +1,5 @@
+#!/bin/sh
+
 FROM python:3.8.13-bullseye
 
 # update and upgrade
