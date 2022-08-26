@@ -1,3 +1,5 @@
+#!/bin/sh
+
 FROM python:3.8.13-bullseye
 
 # update and upgrade
@@ -23,4 +25,4 @@ RUN pip3 install opencv-python==4.5.5.64 opencv-contrib-python==4.5.5.64
 ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
 
 # run the code
-CMD python3 activity_detection_prediction.py
+CMD ["python3", "activity_detection_prediction.py"]
