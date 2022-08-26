@@ -217,7 +217,7 @@ def focus_objects(image):
                     pd.DataFrame({'looks_at_'+key: [value] for key, value in looks_at_.items()})], axis=1)
 
 
-def extract_features(image, extract_focus_objects=False):
+def extract_features(image, extract_focus_objects=True):
   features = None
   # estimate pose landmarks
   landmarks = estimate_pose(image)
@@ -245,7 +245,7 @@ def process_folder(folder_path, name, label, start_iter=0):
             # read image
             image = cv2.imread(img_path)
             # extract features
-            features = extract_features(image, extract_focus_objects=False)
+            features = extract_features(image)
             del image
             gc.collect()
             data = pd.concat([data, features])
