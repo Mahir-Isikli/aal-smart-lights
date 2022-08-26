@@ -1,14 +1,15 @@
 import cv2
 import mediapipe as mp
-from feature_extraction import estimate_pose, calculate_all_angles
-from visualization import draw_landmarks, draw_text
+from feature_extraction import extract_features
 import pickle
 import requests
 import os
+import numpy as np
 
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
-activity_detector = pickle.load(open('activity_detection_model2.pkl', 'rb'))
+activity_detector = pickle.load(
+    open('./models/activity_detection_v3.pkl', 'rb'))
 
 
 """  # Visualization of Pose Estimation and Activity Detection"""
@@ -19,38 +20,36 @@ if __name__ == '__main__':
 
     # Setup mediapipe instance
     with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
+        # Initialize probability list
+        probas, mean_proba, proba_counter = [], -1, 0
+        activity = ''
         while cap.isOpened():
             ret, frame = cap.read()
 
-            # Recolor image to RGB
-            image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            image.flags.writeable = False
-            # Make pose detections
-            results = pose.process(image)
-            # Recolor back to BGR
-            image.flags.writeable = True
-            image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-            # Render pose detections
-            draw_landmarks(image, results.pose_landmarks)
-
             try:
-                # Calculate angles
-                features = calculate_all_angles(results.pose_landmarks.landmark)
-                # Predict the activity
-                y = activity_detector.predict(features)[0]
-                # Render activity detection
-                if y > 0.5 :
-                    draw_text(image, 'Working')
-                    print('Working')
-                    requests.get('http://'+os.environ['LS_HOST']+'/events/trigger?eventID=1')
-                else:
-                    draw_text(image, 'Not Working')
-                    print('Not Working')
-                    requests.get('http://'+os.environ['LS_HOST']+'/events/trigger?eventID=0')
+                # Extract Features
+                features = extract_features(frame)
+                # Predict the activity proba and append to the list
+                y = activity_detector.predict_proba(features)[0][1]
+                probas.append(y)
+                proba_counter += 1
+                # Aggregate prediction results and decide activity for the time frame
+                if proba_counter == 50:
+                    mean_proba = np.mean(probas)
+                    if mean_proba >= 0.5:
+                        activity = 'Working'
+                        requests.get('http://'+os.environ['LS_HOST']+'/events/trigger?eventID=1')
+                    else:
+                        activity = 'Not Working'
+                        requests.get('http://'+os.environ['LS_HOST']+'/events/trigger?eventID=0')
+                    probas = []
+                    proba_counter = 0
+                    print('Aggregated Result:', activity)
+
+                print('Working Proba:', y)
+
             except Exception as e:
                 print(str(e))
-
-            # cv2.imshow('Mediapipe Feed', image)
 
             if cv2.waitKey(10) & 0xFF == ord('q'):
                 break

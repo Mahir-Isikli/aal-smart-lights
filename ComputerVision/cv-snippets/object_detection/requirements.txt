@@ -1,2 +1,0 @@
-opencv_python_headless==4.1.2.30
-matplotlib==3.4.2
