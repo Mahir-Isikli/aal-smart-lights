@@ -5,10 +5,14 @@ import LampConfig from "../models/Lampconfig/LampConfig.interface";
 import LampConfigModel from "../models/Lampconfig/LampConfig.model";
 import LightScene from "../models/Scene/Scene.interface";
 
+/**
+ * Manages "Light Scenes": A scene is list of (Config, Lamp) Tuples. I.e. defines how a set of lamps should be configured.
+ *
+ * @param lampController Reference to the LampController instance
+ *
+ * @param groupController Referece to the GroupController instance
+ */
 export default class SceneController {
-    // kennt alle scenes und alle groups 
-    // kann scenes und groups erstellen, löschen, modifizieren
- 
     private lampController: LampController
     private groupController: GroupController
     constructor(lampController: LampController, groupController: GroupController) {

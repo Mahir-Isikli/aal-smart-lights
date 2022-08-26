@@ -3,6 +3,12 @@ import LampController from "./Lamp.controller";
 import LampGroup from "../models/LampGroup/LampGroup.interface";
 import LampConfig from "../models/Lampconfig/LampConfig.interface";
 
+/**
+ * Manages "Light Groups": A Group of lamps that can be clustered by their location and category. They can be controlled as one instance rather than specifying each configuration by its own.
+ *
+ *
+ * @param lampControler: Reference to the LampController instance
+ */
 export default class GroupController {
 
     private lampController: LampController

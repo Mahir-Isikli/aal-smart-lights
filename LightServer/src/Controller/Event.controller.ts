@@ -1,34 +1,26 @@
 import SceneController from "./Scene.controller";
 import LightEvent from "../models/LightEvent/LightEvent.model"
 
+/**
+ * Manages "Events": A Event is a relation between one EventID and many Scenes.
+ *
+ * @param sceneController: Reference to the SceneController instance
+ */
 export default class EventController {
-    // Verwaltet Liste von Events
-    //  - kann hinzufügen, löschen, modifizieren
-    //private events: Array<LightEvent>
     private scenesController: SceneController
 
     constructor(scenesController: SceneController) {
-        /*
-        const sitDown: LightEvent = {
-            id: "sitDown",
-            scenes: ["bright_lights", "strip1"]
-        }
-
-        this.events = [sitDown]
-
-         */
-
         this.scenesController = scenesController
     }
 
     /**
-     *  löst Event mit EventID aus
+     *  Trigger event with the specified ID by looking it up in the DB
+     *
+     *  @param eventID String that
      */
     handleEvent(eventID: String): Promise<undefined> {
         return new Promise<undefined>((resolve, reject) => {
             console.log("[Event Controller] Handling Event: ", eventID)
-            //LightEvent.find().then(events => console.log("Events: " + events))
-            //const event = this.events.find(event => event.id === eventID)
 
             LightEvent.findOne({id: eventID}).then(event => {
                 if (event === null) {
@@ -42,10 +34,6 @@ export default class EventController {
                         else resolve(undefined)
                     })
             }).catch(() => reject("No event found with ID: " + eventID))
-
-
-
-
         })
     }
 }

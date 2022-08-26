@@ -5,9 +5,10 @@ import LampGroupModel from "../models/LampGroup/LampGroup.model";
 import {GroupCategory, GroupLocation} from "../models/LampGroup/LampGroup.interface";
 const http = require('http')
 
+/**
+ * Knows how to talk to Lamps and how to fetch them from the DB
+ */
 export default class LampController {
-    // kennt alle Lamps (+ add, delete, modify)
-
     constructor() {
 
     }

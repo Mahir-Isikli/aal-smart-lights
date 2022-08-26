@@ -22,6 +22,9 @@ const BACKEND_IP = process.env.BACKEND_IP || "localhost:80" //"192.168.10.193:80
 
 const router = express.Router()
 
+/**
+ * Toggles a Lamp directly either on or off
+ */
 router.get('/toggle', (req: Request, res: Response) => {
   const status = req.query.status == "on";
   console.log("Toggling lights! (" + (status ? "on" : "off") + ")");

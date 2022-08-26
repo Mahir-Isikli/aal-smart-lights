@@ -1,6 +1,9 @@
 const mongoose = require('mongoose')
 const url = 'mongodb://127.0.0.1:27017/LightServer'
 
+/**
+ * Connects the app to the DB instance (mongoose db)
+ */
 mongoose.connect(url, { useNewUrlParser: true })
 const db = mongoose.connection
 db.once('open', () => {

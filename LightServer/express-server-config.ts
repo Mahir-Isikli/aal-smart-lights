@@ -3,14 +3,17 @@ import dotenv from 'dotenv';
 import swaggerUi from 'swagger-ui-express'
 import swaggerJsdoc from 'swagger-jsdoc'
 
-import lightRoutes from './routes/lights/toggle.route'
-import eventRoutes from "./routes/events/trigger.route"
-
+import lightRoutes from './src/routes/lights/toggle.route'
+import eventRoutes from "./src/routes/events/trigger.route"
 dotenv.config();
-
 const app: Express = express();
 const cors = require('cors')
 
+/**
+ * Creates an Express server, then add all routes and configuration
+ *
+ * Returns the configured express instance
+ */
 
 app.use(cors({ credentials: true, origin: true }))
 
@@ -26,7 +29,6 @@ const options = {
         },
     },
     apis: [
-        // './routes/**/*.ts', 
         './routes/lights/*.ts']
 }
 

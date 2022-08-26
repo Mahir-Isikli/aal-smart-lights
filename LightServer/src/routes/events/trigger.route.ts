@@ -30,7 +30,9 @@ const groupController: GroupController = new GroupController(lampController)
 const scenesController: SceneController = new SceneController(lampController, groupController)
 const eventController: EventController = new EventController(scenesController)
 
-
+/**
+ * Triggers an Event with the specified ID
+ */
 router.get('/trigger', (req: Request, res: Response) => {
     const eventID = req.query.eventID || "";
 
